@@ -1,41 +1,49 @@
 "use client";
-
 import { useState } from "react";
-import { useBorrowers } from "./hooks/useBorrower";
-import UpdateModal from "./components/updateModal";
+import { useUsers } from "./hooks/useUser";
 import CreateModal from "./components/createModal";
+import UpdateModal from "./components/updateModal";
 
-export default function BorrowersPage() {
-  const { borrowers, loading, handleDeleteBorrower } = useBorrowers();
+export default function UsersPage() {
+  const { users, loading, handleDeleteUser } = useUsers();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  const [selectedBorrower, setSelectedBorrower] = useState<any>(null);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
   const [search, setSearch] = useState("");
 
-  const filtered = borrowers.filter(
-    (borrower) =>
-      borrower.name.toLowerCase().includes(search.toLowerCase()) ||
-      borrower.alamat.toLowerCase().includes(search.toLowerCase()),
+  const filtered = users.filter(
+    (user) =>
+      user.name.toLowerCase().includes(search.toLowerCase()) ||
+      user.email.toLowerCase().includes(search.toLowerCase()),
   );
+
+  const formatDate = (value?: string) => {
+    if (!value) return "-";
+
+    return new Date(value).toLocaleDateString("id-ID", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold text-gray-800">Data Peminjam</h1>
+      <h1 className="text-3xl font-bold text-gray-800">Data Pengguna</h1>
 
-      <p className="text-gray-500 mt-1">Kelola data peminjam di perpustakaan</p>
+      <p className="text-gray-500 mt-1">Kelola data pengguna di perpustakaan</p>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         <div className="bg-white rounded-lg p-6 shadow-md">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-2xl font-semibold text-gray-900">
-                Data Peminjam
+                Data Pengguna
               </h1>
               <p className="text-sm text-gray-500 mt-1">
-                {borrowers.length} peminjam terdaftar
+                {users.length} pengguna
               </p>
             </div>
-
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 bg-white">
                 <svg
@@ -54,7 +62,7 @@ export default function BorrowersPage() {
                 </svg>
                 <input
                   type="text"
-                  placeholder="Cari peminjam..."
+                  placeholder="Cari Pengguna..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="bg-transparent text-sm outline-none text-gray-700 placeholder-gray-400 w-44"
@@ -62,7 +70,9 @@ export default function BorrowersPage() {
               </div>
 
               <button
-                onClick={() => setIsCreateModalOpen(true)}
+                onClick={() => {
+                  setIsCreateModalOpen(true);
+                }}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-500 transition"
               >
                 <svg
@@ -97,8 +107,8 @@ export default function BorrowersPage() {
                 className="min-w-full text-sm"
                 style={{ tableLayout: "fixed" }}
               >
-                <thead className="bg-gray-50 text-center">
-                  <tr className="border-b border-gray-100">
+                <thead>
+                  <tr className="border-b border-gray-100 bg-gray-50">
                     <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 w-12">
                       #
                     </th>
@@ -106,21 +116,22 @@ export default function BorrowersPage() {
                       Nama
                     </th>
                     <th className="text-left px-4 py-3 text-xs font-medium text-gray-500">
-                      Alamat
+                      Email
                     </th>
                     <th className="text-left px-4 py-3 text-xs font-medium text-gray-500">
-                      Telepon
+                      Password
                     </th>
-                    <th className="text-right px-4 py-3 text-xs font-medium text-gray-500 w-28">
+                    <th className=" px-4 py-3 text-xs font-medium text-gray-500 text-right">
                       Aksi
                     </th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {loading && (
                     <tr>
                       <td
-                        colSpan={3}
+                        colSpan={5}
                         className="px-4 py-10 text-center text-sm text-gray-400"
                       >
                         Memuat data...
@@ -131,36 +142,40 @@ export default function BorrowersPage() {
                   {!loading && filtered.length === 0 && (
                     <tr>
                       <td
-                        colSpan={3}
+                        colSpan={5}
                         className="px-4 py-10 text-center text-sm text-gray-400"
                       >
-                        Tidak ada peminjam ditemukan.
+                        Tidak ada data peminjaman.
                       </td>
                     </tr>
                   )}
 
-                  {filtered.map((b, i) => (
+                  {filtered.map((user, i) => (
                     <tr
-                      key={b.id}
+                      key={user.id}
                       className="border-b last:border-0 hover:bg-gray-50 transition-colors"
                     >
                       <td className="px-4 py-3 text-gray-500 w-12">{i + 1}</td>
+
                       <td className="px-4 py-3 font-medium text-gray-900 truncate">
-                        {b.name}
+                        {user.name}
                       </td>
+
                       <td className="px-4 py-3 text-gray-500 truncate">
-                        {b.alamat}
+                        {user.email}
                       </td>
+
                       <td className="px-4 py-3 text-gray-500 truncate">
-                        {b.phone}
+                        {user.password}
                       </td>
+
                       <td className="px-4 py-3">
                         <div className="flex gap-2 justify-end">
                           <button
                             className="p-2 rounded-md border border-gray-200 text-gray-600 hover:bg-gray-100 transition"
                             aria-label="Edit"
                             onClick={() => {
-                              setSelectedBorrower(b);
+                              setSelectedUser(user);
                               setIsUpdateModalOpen(true);
                             }}
                           >
@@ -180,7 +195,7 @@ export default function BorrowersPage() {
                             </svg>
                           </button>
                           <button
-                            onClick={() => handleDeleteBorrower(b.id)}
+                            onClick={() => handleDeleteUser(user.id)}
                             className="p-2 rounded-md border border-gray-200 text-red-500 hover:bg-red-50 transition"
                             aria-label="Hapus"
                           >
@@ -208,10 +223,10 @@ export default function BorrowersPage() {
               <UpdateModal
                 isOpen={isUpdateModalOpen}
                 onClose={() => setIsUpdateModalOpen(false)}
+                user={selectedUser}
                 onSubmit={(data) => {
                   setIsUpdateModalOpen(false);
                 }}
-                borrower={selectedBorrower}
               />
             </div>
           </div>

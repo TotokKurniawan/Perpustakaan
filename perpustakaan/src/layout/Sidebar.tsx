@@ -1,5 +1,6 @@
 "use client";
-
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -12,7 +13,7 @@ import {
 
 export default function Sidebar() {
   const pathname = usePathname();
-
+  const [isOpen, setIsOpen] = useState(true);
   if (pathname === "/" || pathname === "/login") return null;
 
   const menus = [
@@ -22,24 +23,34 @@ export default function Sidebar() {
       icon: <LayoutDashboard size={20} />,
     },
     {
-      name: "Books",
+      name: "Buku",
       href: "/books",
       icon: <BookOpen size={20} />,
     },
     {
-      name: "Borrowers",
+      name: "Peminjam",
       href: "/borrower",
       icon: <Users size={20} />,
     },
     {
-      name: "Loans",
+      name: "Peminjaman",
       href: "/loan",
       icon: <ClipboardList size={20} />,
+    },
+    {
+      name: "Pengguna",
+      href: "/user",
+      icon: <Users size={20} />,
     },
   ];
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-white border-r shadow-sm">
+    <aside
+      className={`fixed left-0 top-0 h-screen bg-white border-r shadow-sm transition-all duration-300 z-50 ${
+        isOpen ? "w-64" : "w-20"
+      }`}
+    >
+      {" "}
       {/* Logo */}
       <div className="h-20 flex items-center px-6 border-b">
         <div className="w-10 h-10 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold">
@@ -52,7 +63,6 @@ export default function Sidebar() {
           <p className="text-xs text-gray-500">Management System</p>
         </div>
       </div>
-
       {/* Menu */}
       <nav className="p-4">
         <ul className="space-y-2">
@@ -78,7 +88,6 @@ export default function Sidebar() {
           })}
         </ul>
       </nav>
-
       {/* Logout */}
       <div className="absolute bottom-4 left-4 right-4">
         <Link

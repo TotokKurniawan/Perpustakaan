@@ -1,39 +1,18 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Login } from "@/services/userService";
+import Link from "next/link";
+import { useLogin } from "./useLogin";
 
 export default function LoginPage() {
-  const router = useRouter();
+  const { login, loading, error } = useLogin();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    setLoading(true);
-    setError("");
-
-    try {
-      const response = await Login(email, password);
-
-      console.log(response);
-
-      // simpan user ke localStorage
-      localStorage.setItem("user", JSON.stringify(response.user));
-
-      router.push("/dashboard");
-    } catch (err: any) {
-      setError(err?.response?.data?.message || "Email atau password salah");
-    } finally {
-      setLoading(false);
-    }
+    await login(email, password);
   };
 
   return (

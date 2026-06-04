@@ -19,13 +19,13 @@ export default function Header() {
   ];
 
   return (
-    <header className="w-full sticky top-0 z-50 bg-gradient-to-b from-white/90 to-white/60 backdrop-blur-md shadow-lg border-b">
+    <header className="w-full sticky top-0 z-50 bg-linear-to-b from-white/90 to-white/60 backdrop-blur-md shadow-lg border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center h-16 justify-between">
           {/* left: logo */}
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-md bg-gradient-to-br from-indigo-600 to-purple-600 text-white flex items-center justify-center font-bold shadow-sm">
+              <div className="h-10 w-10 rounded-md bg-linear-to-br from-indigo-600 to-purple-600 text-white flex items-center justify-center font-bold shadow-sm">
                 P
               </div>
               <div className="leading-tight">

@@ -14,7 +14,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Statistik */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8 text-gray-500">
         <Card title="Total Buku" value="120" icon={<BookOpen size={24} />} />
 
         <Card title="Total Peminjam" value="45" icon={<Users size={24} />} />
@@ -33,7 +33,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 text-gray-500">
         {/* Peminjaman Terbaru */}
         <div className="bg-white rounded-xl shadow-sm p-5">
           <h2 className="text-lg font-semibold mb-4">Peminjaman Terbaru</h2>

@@ -1,8 +1,8 @@
 package models
 
 type Borrower struct {
-	ID    uint   `json:"id"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
-	Phone string `json:"phone"`
+	ID     uint   `json:"id"`
+	Name   string `json:"name"`
+	Alamat string `json:"alamat"`
+	Phone  string `json:"phone"`
 }

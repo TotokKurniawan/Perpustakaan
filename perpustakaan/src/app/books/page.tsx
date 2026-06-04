@@ -1,40 +1,20 @@
 "use client";
-import { useEffect, useState } from "react";
-import { getBooks } from "../../services/bookService";
-
-type Book = {
-  id: number;
-  title: string;
-  author: string;
-  publisher?: string;
-  year?: number;
-};
+import { useState } from "react";
+import { useBooks } from "./hooks/useBooks";
+import CreateModal from "./components/createModal";
+import UpdateModal from "./components/updateModal";
 
 export default function BooksPage() {
-  const [books, setBooks] = useState<Book[]>([]);
+  const { books, loading, handleDeleteBook } = useBooks();
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    fetchBooks();
-  }, []);
-
-  const fetchBooks = async () => {
-    setLoading(true);
-    try {
-      const data = await getBooks();
-      setBooks(data || []);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [selectedBook, setSelectedBook] = useState<any>(null);
 
   const filtered = books.filter(
-    (b) =>
-      b.title.toLowerCase().includes(search.toLowerCase()) ||
-      b.author.toLowerCase().includes(search.toLowerCase()),
+    (book) =>
+      book.title.toLowerCase().includes(search.toLowerCase()) ||
+      book.author.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -77,17 +57,11 @@ export default function BooksPage() {
                   onChange={(e) => setSearch(e.target.value)}
                   className="bg-transparent text-sm outline-none text-gray-700 placeholder-gray-400 w-44"
                 />
-                <button
-                  onClick={() => setSearch("")}
-                  className="text-xs text-gray-400"
-                >
-                  Reset
-                </button>
               </div>
 
               <button
                 onClick={() => {
-                  /* open modal */
+                  setIsCreateModalOpen(true);
                 }}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-500 transition"
               >
@@ -105,11 +79,19 @@ export default function BooksPage() {
                     d="M12 4v16m8-8H4"
                   ></path>
                 </svg>
-                Tambah Buku
+                Tambah
               </button>
             </div>
           </div>
+          <CreateModal
+            isOpen={isCreateModalOpen}
+            onClose={() => setIsCreateModalOpen(false)}
+            onSubmit={(data) => {
+              console.log(data);
 
+              setIsCreateModalOpen(false);
+            }}
+          />
           {/* Table */}
           <div className="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm">
             <div className="overflow-x-auto">
@@ -120,7 +102,7 @@ export default function BooksPage() {
                 <thead>
                   <tr className="border-b border-gray-100 bg-gray-50">
                     <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 w-12">
-                      #
+                      No
                     </th>
                     <th className="text-left px-4 py-3 text-xs font-medium text-gray-500">
                       Judul
@@ -189,8 +171,11 @@ export default function BooksPage() {
                       <td className="px-4 py-3">
                         <div className="flex gap-2 justify-end">
                           <button
+                            onClick={() => {
+                              setSelectedBook(book);
+                              setIsUpdateModalOpen(true);
+                            }}
                             className="p-2 rounded-md border border-gray-200 text-gray-600 hover:bg-gray-100 transition"
-                            aria-label="Edit"
                           >
                             <svg
                               className="w-4 h-4"
@@ -208,22 +193,21 @@ export default function BooksPage() {
                             </svg>
                           </button>
                           <button
+                            onClick={() => handleDeleteBook(book.id)}
                             className="p-2 rounded-md border border-gray-200 text-red-500 hover:bg-red-50 transition"
-                            aria-label="Hapus"
                           >
                             <svg
                               className="w-4 h-4"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
-                              xmlns="http://www.w3.org/2000/svg"
                             >
                               <path
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                                 strokeWidth="2"
                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3"
-                              ></path>
+                              />
                             </svg>
                           </button>
                         </div>
@@ -232,6 +216,19 @@ export default function BooksPage() {
                   ))}
                 </tbody>
               </table>
+              <UpdateModal
+                isOpen={isUpdateModalOpen}
+                book={selectedBook}
+                onClose={() => {
+                  setIsUpdateModalOpen(false);
+                  setSelectedBook(null);
+                }}
+                onSubmit={(data) => {
+                  console.log("update", data);
+                  setIsUpdateModalOpen(false);
+                  setSelectedBook(null);
+                }}
+              />
             </div>
           </div>
         </div>

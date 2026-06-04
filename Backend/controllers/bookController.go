@@ -78,7 +78,6 @@ func UpdateBook(c *gin.Context) {
 
 // DELETE /books/:id
 func DeleteBook(c *gin.Context) {
-
 	id := c.Param("id")
 
 	var book models.Book
@@ -90,7 +89,14 @@ func DeleteBook(c *gin.Context) {
 		return
 	}
 
-	config.DB.Delete(&book)
+	result := config.DB.Delete(&book)
+
+	if result.Error != nil {
+		c.JSON(400, gin.H{
+			"message": "Buku masih digunakan pada data peminjaman",
+		})
+		return
+	}
 
 	c.JSON(200, gin.H{
 		"message": "Buku berhasil dihapus",

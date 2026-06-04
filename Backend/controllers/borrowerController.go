@@ -79,7 +79,6 @@ func UpdateBorrower(c *gin.Context) {
 
 // DELETE /borrowers/:id
 func DeleteBorrower(c *gin.Context) {
-
 	id := c.Param("id")
 
 	var borrower models.Borrower
@@ -91,7 +90,14 @@ func DeleteBorrower(c *gin.Context) {
 		return
 	}
 
-	config.DB.Delete(&borrower)
+	result := config.DB.Delete(&borrower)
+
+	if result.Error != nil {
+		c.JSON(400, gin.H{
+			"message": "Peminjam masih digunakan pada data peminjaman",
+		})
+		return
+	}
 
 	c.JSON(200, gin.H{
 		"message": "Peminjam berhasil dihapus",
