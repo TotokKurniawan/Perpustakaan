@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { deleteUser, getUsers } from "../../../services/userService";
 import { User } from "../../../types/userType";
-import Swal from "sweetalert2";
+import { successAlert, confirmDelete, errorAlert } from "../../../utils/alert";
 
 export function useUsers() {
   const [users, setUsers] = useState<User[]>([]);
@@ -20,37 +20,18 @@ export function useUsers() {
   };
 
   const handleDeleteUser = async (id: number) => {
-    const result = await Swal.fire({
-      title: "Hapus User?",
-      text: "Data yang sudah dihapus tidak dapat dikembalikan.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Ya, Hapus",
-      cancelButtonText: "Batal",
-      confirmButtonColor: "#dc2626",
-    });
-
-    if (!result.isConfirmed) return false;
-
+    const confirmed = await confirmDelete(
+      "Hapus Pengguna?",
+      "Data yang sudah dihapus tidak dapat dikembalikan.",
+    );
+    if (!confirmed) return false;
     try {
       await deleteUser(id);
-
-      await Swal.fire({
-        icon: "success",
-        title: "Berhasil",
-        text: "User berhasil dihapus",
-      });
-
+      await successAlert("Data pengguna berhasil dihapus");
       await fetchUsers();
-
       return true;
     } catch (error: any) {
-      await Swal.fire({
-        icon: "error",
-        title: "Tidak Bisa Dihapus",
-        text: error.message,
-      });
-
+      await errorAlert(error.message);
       return false;
     }
   };

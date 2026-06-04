@@ -4,7 +4,7 @@ import {
   deleteBorrower,
 } from "../../../services/borrowerService";
 import { Borrower } from "../../../types/borrowerType";
-import Swal from "sweetalert2";
+import { successAlert, confirmDelete, errorAlert } from "../../../utils/alert";
 
 export function useBorrowers() {
   const [borrowers, setBorrowers] = useState<Borrower[]>([]);
@@ -23,37 +23,19 @@ export function useBorrowers() {
   };
 
   const handleDeleteBorrower = async (id: number) => {
-    const result = await Swal.fire({
-      title: "Hapus Peminjam?",
-      text: "Data yang sudah dihapus tidak dapat dikembalikan.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Ya, Hapus",
-      cancelButtonText: "Batal",
-      confirmButtonColor: "#dc2626",
-    });
-
-    if (!result.isConfirmed) return false;
+    const confirmed = await confirmDelete(
+      "Hapus Peminjam?",
+      "Data yang sudah dihapus tidak dapat dikembalikan.",
+    );
+    if (!confirmed) return false;
 
     try {
       await deleteBorrower(id);
-
-      await Swal.fire({
-        icon: "success",
-        title: "Berhasil",
-        text: "Peminjam berhasil dihapus",
-      });
-
+      await successAlert("Data peminjam berhasil dihapus");
       await fetchBorrowers();
-
       return true;
     } catch (error: any) {
-      await Swal.fire({
-        icon: "error",
-        title: "Tidak Bisa Dihapus",
-        text: error.message,
-      });
-
+      await errorAlert(error.message);
       return false;
     }
   };
@@ -65,7 +47,7 @@ export function useBorrowers() {
   return {
     borrowers,
     loading,
-    refreshBorrowers: fetchBorrowers,
+    fetchBorrowers,
     handleDeleteBorrower,
   };
 }

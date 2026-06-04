@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
 import { getBooks, deleteBook } from "../../../services/bookService";
 import { Book } from "../../../types/bookType";
-import { successAlert } from "../../../utils/alert";
+import { successAlert, confirmDelete, errorAlert } from "../../../utils/alert";
 
 export function useBooks() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -21,32 +20,23 @@ export function useBooks() {
   };
 
   const handleDeleteBook = async (id: number) => {
-    const result = await Swal.fire({
-      title: "Hapus Buku?",
-      text: "Data yang sudah dihapus tidak dapat dikembalikan.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Ya, Hapus",
-      cancelButtonText: "Batal",
-      confirmButtonColor: "#dc2626",
-    });
+    const confirmed = await confirmDelete(
+      "Hapus Buku?",
+      "Data yang sudah dihapus tidak dapat dikembalikan.",
+    );
 
-    if (!result.isConfirmed) return false;
+    if (!confirmed) return false;
 
     try {
       await deleteBook(id);
 
-      successAlert("Data peminjaman berhasil dihapus");
+      await successAlert("Data buku berhasil dihapus");
 
       await fetchBooks();
 
       return true;
     } catch (error: any) {
-      await Swal.fire({
-        icon: "error",
-        title: "Tidak Bisa Dihapus",
-        text: error.message,
-      });
+      await errorAlert(error.message);
 
       return false;
     }
@@ -59,7 +49,7 @@ export function useBooks() {
   return {
     books,
     loading,
-    refreshBooks: fetchBooks,
+    fetchBooks,
     handleDeleteBook,
   };
 }

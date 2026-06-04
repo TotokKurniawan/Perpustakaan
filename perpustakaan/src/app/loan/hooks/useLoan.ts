@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getLoans, deleteLoan } from "../../../services/loanService";
 import { Loan } from "../../../types/loanType";
-import Swal from "sweetalert2";
+import { successAlert, confirmDelete, errorAlert } from "../../../utils/alert";
 
 export function useLoans() {
   const [loans, setLoans] = useState<Loan[]>([]);
@@ -20,37 +20,19 @@ export function useLoans() {
   };
 
   const handleDeleteLoan = async (id: number) => {
-    const result = await Swal.fire({
-      title: "Hapus Peminjaman?",
-      text: "Data yang sudah dihapus tidak dapat dikembalikan.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Ya, Hapus",
-      cancelButtonText: "Batal",
-      confirmButtonColor: "#dc2626",
-    });
-
-    if (!result.isConfirmed) return false;
+    const confirmed = await confirmDelete(
+      "Hapus Peminjaman?",
+      "Data yang sudah dihapus tidak dapat dikembalikan.",
+    );
+    if (!confirmed) return false;
 
     try {
       await deleteLoan(id);
-
-      await Swal.fire({
-        icon: "success",
-        title: "Berhasil",
-        text: "Peminjaman berhasil dihapus",
-      });
-
+      await successAlert("Data peminjaman berhasil dihapus");
       await fetchLoans();
-
       return true;
     } catch (error: any) {
-      await Swal.fire({
-        icon: "error",
-        title: "Tidak Bisa Dihapus",
-        text: error.message,
-      });
-
+      await errorAlert(error.message);
       return false;
     }
   };
@@ -62,7 +44,7 @@ export function useLoans() {
   return {
     loans,
     loading,
-    refreshLoans: fetchLoans,
+    fetchLoans,
     handleDeleteLoan,
   };
 }
