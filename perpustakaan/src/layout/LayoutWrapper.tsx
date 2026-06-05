@@ -15,7 +15,13 @@ export default function LayoutWrapper({
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    const publicRoutes = ["/", "/login", "/forgotPassword", "/register"];
+    const publicRoutes = [
+      "/",
+      "/login",
+      "/forgotPassword",
+      "/register",
+      "/home",
+    ];
 
     if (!token && !publicRoutes.includes(pathname)) {
       router.push("/login");
@@ -30,7 +36,8 @@ export default function LayoutWrapper({
     pathname === "/" ||
     pathname === "/login" ||
     pathname === "/forgotPassword" ||
-    pathname === "/register";
+    pathname === "/register" ||
+    pathname === "/home";
 
   return (
     <>

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLoans } from "./hooks/useLoan";
 import CreateLoanModal from "./components/createModal";
 import UpdateLoanModal from "./components/updateModal";
