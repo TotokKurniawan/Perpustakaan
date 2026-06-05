@@ -38,4 +38,14 @@ func SetupRoutes(r *gin.Engine) {
 	r.POST("/users", controllers.CreateUser)
 	r.PUT("/users/:id", controllers.UpdateUser)
 	r.DELETE("/users/:id", controllers.DeleteUser)
+
+	// DASHBOARD
+	r.GET("/totalBuku", controllers.GetTotalBuku)
+	r.GET("/totalPeminjam", controllers.GetTotalPeminjam)
+	r.GET("/BukuSedangDipinjamBulan", controllers.GetBukuSedangDipinjam)
+	r.GET("/BukuSudahDikembalikan", controllers.GetBukuSudahDikembalikan)
+	r.GET("/PeminjamanBulanIni", controllers.GetPeminjamanBulanIni)
+	r.GET("/BukuTerbaruBulanIni", controllers.GetBukuTerbaruBulanIni)
+	r.GET("/BarchartData", controllers.GetBarchartData)
+	r.GET("/PiechartData", controllers.GetPiechartData)
 }
