@@ -10,9 +10,30 @@ import {
   ClipboardList,
   LogOut,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: "Logout?",
+      text: "Anda akan keluar dari sistem",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya, Logout",
+      cancelButtonText: "Batal",
+    });
+
+    if (!result.isConfirmed) return;
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    router.push("/login");
+  };
   const [isOpen, setIsOpen] = useState(true);
   if (pathname === "/" || pathname === "/login") return null;
 
@@ -90,13 +111,13 @@ export default function Sidebar() {
       </nav>
       {/* Logout */}
       <div className="absolute bottom-4 left-4 right-4">
-        <Link
-          href="/"
-          className="flex items-center justify-center gap-2 bg-red-50 text-red-600 py-3 rounded-lg hover:bg-red-100 transition"
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center justify-center gap-2 bg-red-50 text-red-600 py-3 rounded-lg hover:bg-red-100 transition"
         >
           <LogOut size={18} />
           Logout
-        </Link>
+        </button>
       </div>
     </aside>
   );

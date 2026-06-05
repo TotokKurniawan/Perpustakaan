@@ -15,6 +15,7 @@ import {
 import { useDashboard } from "./hooks/useDashboard";
 
 export default function DashboardPage() {
+  
   const { dashboardData } = useDashboard();
   const COLORS = ["#4f46e5", "#22c55e"];
   const MONTHS = [
@@ -134,6 +135,7 @@ export default function DashboardPage() {
           </ul>
         </div>
 
+        {/* Piechart */}
         <div className="bg-white rounded-xl shadow-sm p-5">
           <h2 className="text-lg font-semibold mb-4">Statistik Peminjaman</h2>
 
@@ -170,6 +172,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* Piechart */}
         <div className="bg-white p-5 rounded-xl shadow-sm ">
           <h2 className="text-lg font-semibold mb-4">Status Buku</h2>
 

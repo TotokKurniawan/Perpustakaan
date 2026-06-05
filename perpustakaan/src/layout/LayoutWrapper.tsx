@@ -1,6 +1,7 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Sidebar from "./Sidebar";
 
 export default function LayoutWrapper({
@@ -9,6 +10,21 @@ export default function LayoutWrapper({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    const publicRoutes = ["/login", "/"];
+
+    if (!token && !publicRoutes.includes(pathname)) {
+      router.push("/login");
+    }
+
+    if (token && publicRoutes.includes(pathname)) {
+      router.push("/dashboard");
+    }
+  }, [pathname, router]);
 
   const noSidebar = pathname === "/" || pathname === "/login";
 

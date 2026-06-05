@@ -1,44 +1,30 @@
 import { User } from "../types/userType";
+import api from "../lib/axios";
 
-const API_URL = "http://localhost:8080/users";
+const API_URL = "/users";
 
 export async function getUsers(): Promise<User[]> {
-  const response = await fetch(API_URL);
-  return response.json();
+  const response = await api.get(API_URL);
+  return response.data;
 }
 
 export async function getUser(id: number): Promise<User> {
-  const response = await fetch(`${API_URL}/${id}`);
-  return response.json();
+  const response = await api.get(`${API_URL}/${id}`);
+  return response.data;
 }
 
 export async function createUser(user: Omit<User, "id">): Promise<User> {
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(user),
-  });
-  return response.json();
+  const response = await api.post(API_URL, user);
+  return response.data;
 }
-
 export async function updateUser(
   id: number,
   user: Partial<User>,
 ): Promise<User> {
-  const response = await fetch(`${API_URL}/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(user),
-  });
-  return response.json();
+  const response = await api.put(`${API_URL}/${id}`, user);
+  return response.data;
 }
 
 export async function deleteUser(id: number): Promise<void> {
-  await fetch(`${API_URL}/${id}`, {
-    method: "DELETE",
-  });
+  await api.delete(`${API_URL}/${id}`);
 }

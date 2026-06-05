@@ -18,8 +18,10 @@ export function useLogin() {
         password,
       });
 
+      localStorage.setItem("token", response.token || "");
       localStorage.setItem("user", JSON.stringify(response.user));
 
+      router.push("/dashboard");
       router.push("/dashboard");
 
       return response;
