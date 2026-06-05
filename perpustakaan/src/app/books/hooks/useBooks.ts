@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { getBooks, deleteBook } from "../../../services/bookService";
+import {
+  getBooks,
+  deleteBook,
+  createBook,
+  updateBook,
+} from "../../../services/bookService";
 import { Book } from "../../../types/bookType";
 import { successAlert, confirmDelete, errorAlert } from "../../../utils/alert";
 
@@ -16,6 +21,26 @@ export function useBooks() {
       console.error(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleCreateBook = async (book: Omit<Book, "id">) => {
+    try {
+      await createBook(book);
+      await successAlert("Data buku berhasil ditambahkan");
+      await fetchBooks();
+    } catch (error: any) {
+      await errorAlert(error.message);
+    }
+  };
+
+  const handleUpdateBook = async (id: number, book: Partial<Book>) => {
+    try {
+      await updateBook(id, book);
+      await successAlert("Data buku berhasil diperbarui");
+      await fetchBooks();
+    } catch (error: any) {
+      await errorAlert(error.message);
     }
   };
 
@@ -50,6 +75,8 @@ export function useBooks() {
     books,
     loading,
     fetchBooks,
+    handleCreateBook,
+    handleUpdateBook,
     handleDeleteBook,
   };
 }

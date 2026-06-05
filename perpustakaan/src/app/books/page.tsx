@@ -5,7 +5,13 @@ import CreateModal from "./components/createModal";
 import UpdateModal from "./components/updateModal";
 
 export default function BooksPage() {
-  const { books, loading, handleDeleteBook } = useBooks();
+  const {
+    books,
+    loading,
+    handleDeleteBook,
+    handleCreateBook,
+    handleUpdateBook,
+  } = useBooks();
   const [search, setSearch] = useState("");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -86,9 +92,8 @@ export default function BooksPage() {
           <CreateModal
             isOpen={isCreateModalOpen}
             onClose={() => setIsCreateModalOpen(false)}
-            onSubmit={(data) => {
-              console.log(data);
-
+            onSubmit={async (data) => {
+              await handleCreateBook(data);
               setIsCreateModalOpen(false);
             }}
           />
@@ -223,8 +228,14 @@ export default function BooksPage() {
                   setIsUpdateModalOpen(false);
                   setSelectedBook(null);
                 }}
-                onSubmit={(data) => {
-                  console.log("update", data);
+                onSubmit={async (data) => {
+                  await handleUpdateBook(data.id, {
+                    title: data.title,
+                    author: data.author,
+                    publisher: data.publisher,
+                    year: data.year,
+                  });
+
                   setIsUpdateModalOpen(false);
                   setSelectedBook(null);
                 }}

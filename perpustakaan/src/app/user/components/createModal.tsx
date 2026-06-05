@@ -14,10 +14,10 @@ export default function CreateModal({
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    onSubmit({
+    await onSubmit({
       name,
       email,
       password,
@@ -26,19 +26,17 @@ export default function CreateModal({
     setName("");
     setEmail("");
     setPassword("");
-
-    onClose();
   };
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="bg-white w-full max-w-md rounded-xl shadow-lg p-6 text-black">
-        <h2 className="text-xl font-semibold mb-4">Tambah User</h2>
+        <h2 className="text-xl font-semibold mb-4">Tambah Pengguna</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
-            placeholder="Nama User"
+            placeholder="Nama"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full border rounded-lg px-3 py-2"
@@ -62,6 +60,7 @@ export default function CreateModal({
             className="w-full border rounded-lg px-3 py-2"
             required
           />
+
           <div className="flex justify-end gap-2">
             <button
               type="button"

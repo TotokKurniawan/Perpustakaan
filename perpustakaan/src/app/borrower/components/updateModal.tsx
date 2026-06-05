@@ -23,17 +23,15 @@ export default function UpdateModal({
 
   if (!isOpen || !borrower) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    onSubmit({
+    await onSubmit({
       id: borrower.id,
       name,
       alamat,
       phone,
     });
-
-    onClose();
   };
 
   return (

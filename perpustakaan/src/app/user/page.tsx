@@ -5,7 +5,13 @@ import CreateModal from "./components/createModal";
 import UpdateModal from "./components/updateModal";
 
 export default function UsersPage() {
-  const { users, loading, handleDeleteUser } = useUsers();
+  const {
+    users,
+    loading,
+    handleDeleteUser,
+    handleCreateUser,
+    handleUpdateUser,
+  } = useUsers();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<any>(null);
@@ -96,7 +102,8 @@ export default function UsersPage() {
           <CreateModal
             isOpen={isCreateModalOpen}
             onClose={() => setIsCreateModalOpen(false)}
-            onSubmit={(data) => {
+            onSubmit={async (data) => {
+              await handleCreateUser(data);
               setIsCreateModalOpen(false);
             }}
           />
@@ -145,7 +152,7 @@ export default function UsersPage() {
                         colSpan={5}
                         className="px-4 py-10 text-center text-sm text-gray-400"
                       >
-                        Tidak ada data peminjaman.
+                        Tidak ada data pengguna.
                       </td>
                     </tr>
                   )}
@@ -222,10 +229,15 @@ export default function UsersPage() {
               </table>
               <UpdateModal
                 isOpen={isUpdateModalOpen}
-                onClose={() => setIsUpdateModalOpen(false)}
-                user={selectedUser}
-                onSubmit={(data) => {
+                onClose={() => {
                   setIsUpdateModalOpen(false);
+                  setSelectedUser(null);
+                }}
+                user={selectedUser}
+                onSubmit={async (data) => {
+                  await handleUpdateUser(data.id, data);
+                  setIsUpdateModalOpen(false);
+                  setSelectedUser(null);
                 }}
               />
             </div>

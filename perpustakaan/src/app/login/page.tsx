@@ -118,7 +118,7 @@ export default function LoginPage() {
                   Ingat saya
                 </label>
                 <a
-                  href="#"
+                  href="/forgotPassword"
                   className="font-medium text-indigo-600 hover:text-indigo-500"
                 >
                   Lupa password?
@@ -142,10 +142,10 @@ export default function LoginPage() {
             <div className="mt-8 rounded-2xl bg-gray-50 p-4 text-sm text-gray-600">
               Belum punya akun?{" "}
               <Link
-                href="/"
+                href="/register"
                 className="font-semibold text-indigo-600 hover:text-indigo-500"
               >
-                Kembali ke landing page
+                Daftar di sini
               </Link>
             </div>
           </div>

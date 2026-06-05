@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import {
   getBorrowers,
   deleteBorrower,
+  updateBorrower,
+  createBorrower,
 } from "../../../services/borrowerService";
 import { Borrower } from "../../../types/borrowerType";
 import { successAlert, confirmDelete, errorAlert } from "../../../utils/alert";
@@ -19,6 +21,29 @@ export function useBorrowers() {
       console.error(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleCreateBorrower = async (borrower: Omit<Borrower, "id">) => {
+    try {
+      await createBorrower(borrower);
+      await successAlert("Data peminjam berhasil ditambahkan");
+      await fetchBorrowers();
+    } catch (error: any) {
+      await errorAlert(error.message);
+    }
+  };
+
+  const handleUpdateBorrower = async (
+    id: number,
+    borrower: Partial<Borrower>,
+  ) => {
+    try {
+      await updateBorrower(id, borrower);
+      await successAlert("Data peminjam berhasil diperbarui");
+      await fetchBorrowers();
+    } catch (error: any) {
+      await errorAlert(error.message);
     }
   };
 
@@ -48,6 +73,8 @@ export function useBorrowers() {
     borrowers,
     loading,
     fetchBorrowers,
+    handleCreateBorrower,
+    handleUpdateBorrower,
     handleDeleteBorrower,
   };
 }

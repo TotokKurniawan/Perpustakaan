@@ -34,8 +34,6 @@ export default function CreateLoanModal({
     setBorrowDate("");
     setReturnDate("");
     setStatus("BORROWED");
-
-    onClose();
   };
 
   return (
@@ -101,16 +99,6 @@ export default function CreateLoanModal({
               required
             />
           </div>
-
-          {/* Status */}
-          <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2"
-          >
-            <option value="BORROWED">BORROWED</option>
-            <option value="RETURNED">RETURNED</option>
-          </select>
 
           <div className="flex justify-end gap-2 pt-2">
             <button

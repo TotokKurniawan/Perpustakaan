@@ -8,7 +8,7 @@ export type Borrower = {
 export type CreateModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: { nama: string; alamat: string; telepon: string }) => void;
+  onSubmit: (data: { name: string; alamat: string; phone: string }) => void;
 };
 
 export type UpdateModalProps = {

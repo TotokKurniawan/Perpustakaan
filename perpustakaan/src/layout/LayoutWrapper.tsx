@@ -15,7 +15,7 @@ export default function LayoutWrapper({
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    const publicRoutes = ["/login", "/"];
+    const publicRoutes = ["/", "/login", "/forgotPassword", "/register"];
 
     if (!token && !publicRoutes.includes(pathname)) {
       router.push("/login");
@@ -26,7 +26,11 @@ export default function LayoutWrapper({
     }
   }, [pathname, router]);
 
-  const noSidebar = pathname === "/" || pathname === "/login";
+  const noSidebar =
+    pathname === "/" ||
+    pathname === "/login" ||
+    pathname === "/forgotPassword" ||
+    pathname === "/register";
 
   return (
     <>

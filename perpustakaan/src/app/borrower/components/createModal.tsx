@@ -8,9 +8,9 @@ export default function CreateModal({
   onClose,
   onSubmit,
 }: CreateModalProps) {
-  const [nama, setNama] = useState("");
   const [alamat, setAlamat] = useState("");
-  const [telepon, setTelepon] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
 
   if (!isOpen) return null;
 
@@ -18,14 +18,14 @@ export default function CreateModal({
     e.preventDefault();
 
     onSubmit({
-      nama,
+      name,
       alamat,
-      telepon,
+      phone,
     });
 
-    setNama("");
+    setName("");
     setAlamat("");
-    setTelepon("");
+    setPhone("");
 
     onClose();
   };
@@ -39,8 +39,8 @@ export default function CreateModal({
           <input
             type="text"
             placeholder="Nama Peminjam"
-            value={nama}
-            onChange={(e) => setNama(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             className="w-full border rounded-lg px-3 py-2"
             required
           />
@@ -57,8 +57,8 @@ export default function CreateModal({
           <input
             type="text"
             placeholder="Telepon"
-            value={telepon}
-            onChange={(e) => setTelepon(e.target.value)}
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
             className="w-full border rounded-lg px-3 py-2"
             required
           />

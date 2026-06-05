@@ -50,8 +50,6 @@ export default function UpdateLoanModal({
       return_date: returnDate,
       status,
     });
-
-    onClose();
   };
 
   return (
@@ -61,36 +59,28 @@ export default function UpdateLoanModal({
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Buku */}
-          <select
-            value={bookId}
-            onChange={(e) => setBookId(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2"
-            required
-          >
-            <option value="">Pilih Buku</option>
-
-            {books.map((book) => (
-              <option key={book.id} value={book.id}>
-                {book.title}
-              </option>
-            ))}
-          </select>
+          <div>
+            <label className="block mb-1 text-sm font-medium">Buku</label>
+            <input
+              type="text"
+              value={books.find((b) => b.id === Number(bookId))?.title || ""}
+              readOnly
+              className="w-full border rounded-lg px-3 py-2 bg-gray-100 cursor-not-allowed"
+            />
+          </div>
 
           {/* Peminjam */}
-          <select
-            value={borrowerId}
-            onChange={(e) => setBorrowerId(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2"
-            required
-          >
-            <option value="">Pilih Peminjam</option>
-
-            {borrowers.map((borrower) => (
-              <option key={borrower.id} value={borrower.id}>
-                {borrower.name}
-              </option>
-            ))}
-          </select>
+          <div>
+            <label className="block mb-1 text-sm font-medium">Peminjam</label>
+            <input
+              type="text"
+              value={
+                borrowers.find((b) => b.id === Number(borrowerId))?.name || ""
+              }
+              readOnly
+              className="w-full border rounded-lg px-3 py-2 bg-gray-100 cursor-not-allowed"
+            />
+          </div>
 
           {/* Tanggal Pinjam */}
           <div>

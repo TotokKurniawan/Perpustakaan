@@ -31,6 +31,8 @@ func SetupRoutes(r *gin.Engine) {
 
 	// LOGIN
 	r.POST("/login", controllers.Login)
+	r.POST("/resetPassword", controllers.ResetPassword)	
+	r.POST("/register", controllers.Register)
 
 	// USERS
 	r.GET("/users", controllers.GetUsers)

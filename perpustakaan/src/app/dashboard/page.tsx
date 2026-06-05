@@ -15,7 +15,6 @@ import {
 import { useDashboard } from "./hooks/useDashboard";
 
 export default function DashboardPage() {
-  
   const { dashboardData } = useDashboard();
   const COLORS = ["#4f46e5", "#22c55e"];
   const MONTHS = [
@@ -139,7 +138,7 @@ export default function DashboardPage() {
         <div className="bg-white rounded-xl shadow-sm p-5">
           <h2 className="text-lg font-semibold mb-4">Statistik Peminjaman</h2>
 
-          <div className="w-full h-[300px] relative">
+          <div className="w-full h-75 relative">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={barData}

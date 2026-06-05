@@ -1,34 +1,31 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLoans } from "./hooks/useLoan";
 import CreateLoanModal from "./components/createModal";
 import UpdateLoanModal from "./components/updateModal";
+import { useBooks } from "../books/hooks/useBooks";
+import { useBorrowers } from "../borrower/hooks/useBorrower";
 
 export default function LoansPage() {
-  const { loans, loading, handleDeleteLoan } = useLoans();
+  const {
+    loans,
+    loading,
+    handleDeleteLoan,
+    handleCreateLoan,
+    handleUpdateLoan,
+  } = useLoans();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedLoan, setSelectedLoan] = useState<any>(null);
   const [search, setSearch] = useState("");
+  const { books } = useBooks();
+  const { borrowers } = useBorrowers();
 
   const filtered = loans.filter(
     (loan) =>
       loan.Borrower?.name.toLowerCase().includes(search.toLowerCase()) ||
       loan.Borrower?.alamat.toLowerCase().includes(search.toLowerCase()),
   );
-  const borrowers = [
-    {
-      id: 1,
-      name: "Lukman",
-    },
-  ];
-
-  const books = [
-    {
-      id: 1,
-      title: "Belajar React",
-    },
-  ];
 
   const formatDate = (value?: string) => {
     if (!value) return "-";
@@ -113,8 +110,8 @@ export default function LoansPage() {
             onClose={() => setIsCreateModalOpen(false)}
             borrowers={borrowers}
             books={books}
-            onSubmit={(data) => {
-              console.log(data);
+            onSubmit={async (data) => {
+              await handleCreateLoan(data);
               setIsCreateModalOpen(false);
             }}
           />
@@ -124,8 +121,8 @@ export default function LoansPage() {
             loan={selectedLoan}
             borrowers={borrowers}
             books={books}
-            onSubmit={(id, data) => {
-              console.log(id, data);
+            onSubmit={async (id, data) => {
+              await handleUpdateLoan(id, data);
               setIsUpdateModalOpen(false);
             }}
           />

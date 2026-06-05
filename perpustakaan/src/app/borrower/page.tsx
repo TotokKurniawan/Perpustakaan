@@ -6,7 +6,13 @@ import UpdateModal from "./components/updateModal";
 import CreateModal from "./components/createModal";
 
 export default function BorrowersPage() {
-  const { borrowers, loading, handleDeleteBorrower } = useBorrowers();
+  const {
+    borrowers,
+    loading,
+    handleDeleteBorrower,
+    handleUpdateBorrower,
+    handleCreateBorrower,
+  } = useBorrowers();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedBorrower, setSelectedBorrower] = useState<any>(null);
@@ -86,7 +92,8 @@ export default function BorrowersPage() {
           <CreateModal
             isOpen={isCreateModalOpen}
             onClose={() => setIsCreateModalOpen(false)}
-            onSubmit={(data) => {
+            onSubmit={async (data) => {
+              await handleCreateBorrower(data);
               setIsCreateModalOpen(false);
             }}
           />
@@ -207,11 +214,21 @@ export default function BorrowersPage() {
               </table>
               <UpdateModal
                 isOpen={isUpdateModalOpen}
-                onClose={() => setIsUpdateModalOpen(false)}
-                onSubmit={(data) => {
-                  setIsUpdateModalOpen(false);
-                }}
                 borrower={selectedBorrower}
+                onClose={() => {
+                  setIsUpdateModalOpen(false);
+                  setSelectedBorrower(null);
+                }}
+                onSubmit={async (data) => {
+                  await handleUpdateBorrower(data.id, {
+                    name: data.name,
+                    alamat: data.alamat,
+                    phone: data.phone,
+                  });
+
+                  setIsUpdateModalOpen(false);
+                  setSelectedBorrower(null);
+                }}
               />
             </div>
           </div>

@@ -15,10 +15,10 @@ export default function CreateModal({
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    onSubmit({
+    await onSubmit({
       title,
       author,
       publisher,
@@ -29,8 +29,6 @@ export default function CreateModal({
     setAuthor("");
     setPublisher("");
     setYear("");
-
-    onClose();
   };
 
   return (
